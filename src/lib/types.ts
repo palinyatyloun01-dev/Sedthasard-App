@@ -15,8 +15,8 @@ export interface Student {
     department: string;
     status: 'ໂສດ' | 'ມີຄອບຄົວ';
     phone: string;
-    photoUrl: string;
-    notes: string;
+    photoUrl?: string;
+    notes?: string;
 }
   
 export interface Income {

@@ -40,9 +40,18 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
   });
 
   useEffect(() => {
+    // We get the students every time the dialog opens to ensure fresh data.
     if (isOpen) {
         setStudents(getStudents());
-        form.reset({ date: new Date().toISOString().split('T')[0], description: '' });
+        form.reset({ 
+            date: new Date().toISOString().split('T')[0], 
+            description: '',
+            source: undefined,
+            amount: 0,
+            paymentMethod: undefined,
+            studentId: undefined,
+            status: undefined
+        });
     }
   }, [isOpen, form]);
 

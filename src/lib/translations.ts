@@ -80,7 +80,6 @@ export interface Translation {
         },
         searchCard: {
             title: string;
-            description: string;
             placeholder: string;
         },
         addIncomeButton: string;
@@ -140,7 +139,7 @@ const en: Translation = {
     },
     login: {
         title: 'Sedthasard App',
-        passwordPlaceholder: 'Enter password (phone number)',
+        passwordPlaceholder: 'Enter password',
         loginButton: 'Login',
         backgroundButton: 'Select Background Image',
         footer: 'This app is for recording data and income-expenses for Political Economy students only.',
@@ -169,7 +168,6 @@ const en: Translation = {
         },
         searchCard: {
             title: 'Search Data',
-            description: 'Search all data saved in the application.',
             placeholder: 'Type to search for students, income, or expenses...',
         },
         addIncomeButton: 'Add Income',
@@ -229,7 +227,7 @@ const lo: Translation = {
     },
     login: {
         title: 'Sedthasard App',
-        passwordPlaceholder: 'ໃສ່ລະຫັດຜ່ານ (ເບີໂທ)',
+        passwordPlaceholder: 'ໃສ່ລະຫັດຜ່ານ',
         loginButton: 'ເຂົ້າສູ່ລະບົບ',
         backgroundButton: 'ເລືອກຮູບພື້ນຫຼັງ',
         footer: 'ແອັບນີ້ໃຊ້ສຳລັບບັນທຶກຂໍ້ມູນ ແລະ ລາຍຮັບ-ລາຍຈ່າຍຂອງນັກສຶກສາສາຍເສດຖະສາດການເມືອງເທົ່ານັ້ນ',
@@ -258,7 +256,6 @@ const lo: Translation = {
         },
         searchCard: {
             title: 'ຄົ້ນຫາຂໍ້ມູນ',
-            description: 'ຄົ້ນຫາຂໍ້ມູນທັງໝົດທີ່ບັນທຶກໄວ້ໃນແອັບພລິເຄຊັນ.',
             placeholder: 'ພິມເພື່ອຄົ້ນຫາຂໍ້ມູນນັກສຶກສາ, ລາຍຮັບ, ຫຼື ລາຍຈ່າຍ...',
         },
         addIncomeButton: 'ເພີ່ມລາຍຮັບ',
@@ -318,7 +315,7 @@ const zh: Translation = {
     },
     login: {
         title: 'Sedthasard App',
-        passwordPlaceholder: '输入密码（电话号码）',
+        passwordPlaceholder: '输入密码',
         loginButton: '登录',
         backgroundButton: '选择背景图片',
         footer: '此应用仅用于记录政治经济学专业学生的数据和收支。',
@@ -347,7 +344,6 @@ const zh: Translation = {
         },
         searchCard: {
             title: '搜索数据',
-            description: '搜索应用程序中保存的所有数据。',
             placeholder: '输入以搜索学生、收入或支出...',
         },
         addIncomeButton: '添加收入',
@@ -407,7 +403,7 @@ const vi: Translation = {
     },
     login: {
         title: 'Sedthasard App',
-        passwordPlaceholder: 'Nhập mật khẩu (số điện thoại)',
+        passwordPlaceholder: 'Nhập mật khẩu',
         loginButton: 'Đăng nhập',
         backgroundButton: 'Chọn ảnh nền',
         footer: 'Ứng dụng này chỉ dùng để ghi lại dữ liệu và thu chi cho sinh viên Kinh tế Chính trị.',
@@ -436,7 +432,6 @@ const vi: Translation = {
         },
         searchCard: {
             title: 'Tìm kiếm dữ liệu',
-            description: 'Tìm kiếm tất cả dữ liệu được lưu trong ứng dụng.',
             placeholder: 'Nhập để tìm kiếm sinh viên, thu nhập hoặc chi phí...',
         },
         addIncomeButton: 'Thêm thu nhập',
@@ -496,7 +491,7 @@ const th: Translation = {
     },
     login: {
         title: 'Sedthasard App',
-        passwordPlaceholder: 'ป้อนรหัสผ่าน (หมายเลขโทรศัพท์)',
+        passwordPlaceholder: 'ป้อนรหัสผ่าน',
         loginButton: 'เข้าสู่ระบบ',
         backgroundButton: 'เลือกภาพพื้นหลัง',
         footer: 'แอปนี้ใช้สำหรับบันทึกข้อมูลและรายรับ-รายจ่ายสำหรับนักศึกษาเศรษฐศาสตร์การเมืองเท่านั้น',
@@ -525,7 +520,6 @@ const th: Translation = {
         },
         searchCard: {
             title: 'ค้นหาข้อมูล',
-            description: 'ค้นหาข้อมูลทั้งหมดที่บันทึกไว้ในแอปพลิเคชัน',
             placeholder: 'พิมพ์เพื่อค้นหานักศึกษา รายรับ หรือรายจ่าย...',
         },
         addIncomeButton: 'เพิ่มรายรับ',

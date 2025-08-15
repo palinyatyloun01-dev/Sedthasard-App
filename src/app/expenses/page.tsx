@@ -1,3 +1,4 @@
+
 'use client';
 import { useEffect, useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
@@ -50,7 +51,7 @@ export default function ExpensesPage() {
                             <PlusCircle className="mr-2 h-4 w-4" />
                             ເພີ່ມລາຍຈ່າຍ
                         </Button>
-                        <Card className="min-w-48 text-right">
+                        <Card className="min-w-48 text-right border-2">
                            <CardHeader className="p-2 pb-0">
                                 <CardDescription>ລາຍຈ່າຍລວມ</CardDescription>
                             </CardHeader>

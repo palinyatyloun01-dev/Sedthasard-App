@@ -64,7 +64,7 @@ export default function DashboardPage() {
     return (
         <AppLayout>
             <div className="flex flex-col space-y-6">
-                <Card className="overflow-hidden border-destructive">
+                <Card className="overflow-hidden border-2 border-destructive">
                     <CardContent className="p-4 text-center">
                         <h2 className="animate-glow text-2xl font-bold tracking-tight">
                             {translations.dashboard.welcomeMessage}
@@ -73,7 +73,7 @@ export default function DashboardPage() {
                 </Card>
 
                 <div className="flex items-start gap-4">
-                    <Card className="flex-1 border-accent">
+                    <Card className="flex-1 border-2 border-accent">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <Search className="h-6 w-6" />
@@ -102,7 +102,7 @@ export default function DashboardPage() {
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     {menuItems.map((item, index) => (
                         <Link href={item.href} key={index}>
-                            <Card className="h-full transform cursor-pointer border-transparent transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg hover:shadow-primary/20">
+                            <Card className="h-full transform cursor-pointer border-2 border-transparent transition-all hover:-translate-y-1 hover:border-primary hover:shadow-lg hover:shadow-primary/20">
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <CardTitle className="text-lg font-medium">{item.title}</CardTitle>
                                     {item.icon}

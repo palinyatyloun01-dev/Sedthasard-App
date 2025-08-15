@@ -1,3 +1,4 @@
+
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Expense } from '@/lib/types';
@@ -21,7 +22,7 @@ export default function PieChartReport({ expense }: PieChartReportProps) {
     const expenseChartData = Object.entries(expenseByCategory).map(([name, value]) => ({ name, value }));
 
   return (
-    <Card>
+    <Card className='border-2'>
         <CardHeader>
           <CardTitle>ປະເພດລາຍຈ່າຍ</CardTitle>
         </CardHeader>

@@ -1,3 +1,4 @@
+
 'use client';
 import { summarizeFinancialData } from '@/ai/flows/financial-summary';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,7 +52,7 @@ export default function FinancialSummary({ incomes, expenses, timePeriod }: Fina
     }, [incomes, expenses, timePeriod, toast]);
 
     return (
-        <Card className="border-primary">
+        <Card className="border-2 border-primary">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Bot className="h-6 w-6" />

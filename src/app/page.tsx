@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useState, useRef, useEffect, type ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { Shield, Eye, EyeOff } from 'lucide-react';
+import { Shield, Eye, EyeOff, ImagePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
@@ -70,7 +71,23 @@ export default function LoginPage() {
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-      <Card className="z-10 w-full max-w-md border-destructive shadow-lg shadow-destructive/10">
+      <Card className="relative z-10 w-full max-w-md border-4 border-destructive shadow-lg shadow-destructive/10">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:bg-accent/50"
+          onClick={() => fileInputRef.current?.click()}
+          title={translations.login.backgroundButton}
+        >
+          <ImagePlus className="h-5 w-5" />
+        </Button>
+         <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          className="hidden"
+        />
         <CardHeader className="items-center text-center">
           <Logo />
           <h1 className="text-2xl font-bold">{translations.login.title}</h1>
@@ -84,7 +101,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={translations.login.passwordPlaceholder}
-              className="pr-10"
+              className="pr-10 bg-[#008080]"
             />
             <Button 
               type="button" 
@@ -96,22 +113,8 @@ export default function LoginPage() {
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
           </div>
-          <Button onClick={handleLogin} className="w-full" size="lg">
+          <Button onClick={handleLogin} className="w-full bg-[#ff00ff] hover:bg-[#ff00ff]/80" size="lg">
             {translations.login.loginButton}
-          </Button>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleImageChange}
-            className="hidden"
-          />
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            {translations.login.backgroundButton}
           </Button>
         </CardContent>
         <CardFooter>

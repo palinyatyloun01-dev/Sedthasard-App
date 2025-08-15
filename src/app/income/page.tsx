@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -51,7 +52,7 @@ export default function IncomePage() {
                             <PlusCircle className="mr-2 h-4 w-4" />
                             ເພີ່ມລາຍຮັບ
                         </Button>
-                        <Card className="min-w-48 text-right">
+                        <Card className="min-w-48 text-right border-2">
                            <CardHeader className="p-2 pb-0">
                                 <CardDescription>ລາຍຮັບລວມ</CardDescription>
                             </CardHeader>

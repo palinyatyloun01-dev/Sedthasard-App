@@ -1,3 +1,4 @@
+
 'use client';
 import { useEffect, useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
@@ -64,7 +65,7 @@ export default function StudentsPage() {
                         ເພີ່ມນັກສຶກສາ
                     </Button>
                 </div>
-                <Card className="border-destructive">
+                <Card className="border-2 border-destructive">
                     <CardContent className="p-4">
                         <DataTable columns={columns({ onEdit: handleEditStudent })} data={students} />
                     </CardContent>

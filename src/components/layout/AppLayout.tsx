@@ -227,10 +227,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <Button variant="destructive" onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  {translations.logout}
-                </Button>
             </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">

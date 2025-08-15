@@ -38,7 +38,12 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
 
   useEffect(() => {
     if (isOpen) {
-      form.reset({ date: new Date().toISOString().split('T')[0], description: '' });
+      form.reset({ 
+        date: new Date().toISOString().split('T')[0], 
+        description: '',
+        type: undefined,
+        amount: 0,
+      });
     }
   }, [isOpen, form]);
 
@@ -75,8 +80,7 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
                 </FormItem>
               )}
             />
-            {type === 'ອື່ນໆ' && (
-              <FormField
+             <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
@@ -87,7 +91,6 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
                   </FormItem>
                 )}
               />
-            )}
             <FormField
               control={form.control}
               name="amount"

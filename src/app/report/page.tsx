@@ -1,3 +1,4 @@
+
 'use client';
 import { useEffect, useState } from 'react';
 import {
@@ -64,7 +65,7 @@ export default function ReportPage() {
       <div className="space-y-4">
         <h1 className="text-2xl font-bold">ລາຍງານສະຫຼຸບ</h1>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Card>
+          <Card className='border-2'>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ລາຍຮັບລວມ</CardTitle>
             </CardHeader>
@@ -72,7 +73,7 @@ export default function ReportPage() {
               <div className="text-2xl font-bold text-green-400">{totalIncome.toLocaleString()} LAK</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className='border-2'>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ລາຍຈ່າຍລວມ</CardTitle>
             </CardHeader>
@@ -80,7 +81,7 @@ export default function ReportPage() {
               <div className="text-2xl font-bold text-destructive">{totalExpense.toLocaleString()} LAK</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className='border-2'>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">ຍອດເຫຼືອ</CardTitle>
             </CardHeader>
@@ -94,7 +95,7 @@ export default function ReportPage() {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-4">
              <FinancialSummary incomes={filteredIncomes} expenses={filteredExpenses} timePeriod={timePeriod} />
-            <Card className="border-destructive">
+            <Card className="border-2 border-destructive">
                 <CardHeader>
                     <CardTitle>ພາບລວມການເງິນ</CardTitle>
                     <CardDescription>ເລືອກຮູບແບບການສະແດງຜົນ</CardDescription>
@@ -116,7 +117,7 @@ export default function ReportPage() {
             </Card>
           </div>
           <div className="space-y-4">
-            <Card className="border-destructive">
+            <Card className="border-2 border-destructive">
               <CardHeader>
                 <CardTitle>ເລືອກຊ່ວງເວລາ</CardTitle>
               </CardHeader>
@@ -137,7 +138,7 @@ export default function ReportPage() {
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="rounded-md border"
+                    className="rounded-md border-2"
                     initialFocus
                   />
                 </div>

@@ -1,3 +1,4 @@
+
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Income, Expense } from '@/lib/types';
@@ -18,7 +19,7 @@ export default function BarChartReport({ income, expense }: BarChartReportProps)
     ];
 
   return (
-    <Card>
+    <Card className='border-2'>
         <CardHeader>
           <CardTitle>ສະຫຼຸບລາຍຮັບ-ລາຍຈ່າຍ</CardTitle>
         </CardHeader>

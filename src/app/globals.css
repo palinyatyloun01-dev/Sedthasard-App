@@ -13,7 +13,7 @@
     --popover: 120 30% 18%;
     --popover-foreground: 40 10% 95%;
 
-    --primary: 340 50% 65%; /* Dark Pink */
+    --primary: 300 100% 50%; /* ff00ff Magenta */
     --primary-foreground: 40 10% 98%;
 
     --secondary: 120 30% 25%; /* Another Green Shade */
@@ -30,7 +30,7 @@
 
     --border: 120 30% 25%;
     --input: 120 30% 22%;
-    --ring: 340 50% 65%;
+    --ring: 300 100% 50%; /* ff00ff Magenta */
     
     --radius: 0.5rem;
   }
@@ -42,7 +42,7 @@
     --card-foreground: 40 10% 95%;
     --popover: 120 30% 18%;
     --popover-foreground: 40 10% 95%;
-    --primary: 340 50% 65%;
+    --primary: 300 100% 50%; /* ff00ff Magenta */
     --primary-foreground: 40 10% 98%;
     --secondary: 120 30% 25%;
     --secondary-foreground: 40 10% 95%;
@@ -54,7 +54,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 120 30% 25%;
     --input: 120 30% 22%;
-    --ring: 340 50% 65%;
+    --ring: 300 100% 50%; /* ff00ff Magenta */
   }
 }
 
