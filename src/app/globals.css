@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 120 30% 15%; /* Dark Green */
+    --foreground: 40 10% 95%; /* Light Gray/White */
+
+    --card: 120 30% 18%; /* Slightly Lighter Dark Green */
+    --card-foreground: 40 10% 95%;
+
+    --popover: 120 30% 18%;
+    --popover-foreground: 40 10% 95%;
+
+    --primary: 340 50% 65%; /* Dark Pink */
+    --primary-foreground: 40 10% 98%;
+
+    --secondary: 120 30% 25%; /* Another Green Shade */
+    --secondary-foreground: 40 10% 95%;
+
+    --muted: 120 30% 22%;
+    --muted-foreground: 40 10% 65%;
+
+    --accent: 280 50% 70%; /* Purple */
+    --accent-foreground: 40 10% 98%;
+
+    --destructive: 0 72% 51%; /* Red */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 120 30% 25%;
+    --input: 120 30% 22%;
+    --ring: 340 50% 65%;
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 120 30% 15%;
+    --foreground: 40 10% 95%;
+    --card: 120 30% 18%;
+    --card-foreground: 40 10% 95%;
+    --popover: 120 30% 18%;
+    --popover-foreground: 40 10% 95%;
+    --primary: 340 50% 65%;
+    --primary-foreground: 40 10% 98%;
+    --secondary: 120 30% 25%;
+    --secondary-foreground: 40 10% 95%;
+    --muted: 120 30% 22%;
+    --muted-foreground: 40 10% 65%;
+    --accent: 280 50% 70%;
+    --accent-foreground: 40 10% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 120 30% 25%;
+    --input: 120 30% 22%;
+    --ring: 340 50% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
