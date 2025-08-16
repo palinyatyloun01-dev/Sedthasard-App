@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getStudents } from '@/lib/data';
 import { useEffect, useState } from 'react';
-import type { Student } from '@/lib/types';
+import type { Student, Income } from '@/lib/types';
 import { Textarea } from '@/components/ui/textarea';
 
 const incomeSchema = z.object({
@@ -28,16 +28,25 @@ type IncomeFormData = z.infer<typeof incomeSchema>;
 interface IncomeDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onSave: (data: Omit<IncomeFormData, 'id'>) => void;
+  onSave: (data: Omit<IncomeFormData, 'id'>, id?: string) => void;
+  income: Income | null;
 }
 
-const incomeSources = ['ເກັບເງິນຄັງປະຈຳເດືອນ', 'ຂະບວນການກິດຈະກຳ'];
+const incomeSources = ['ເກັບເງິນຄັງປະຈຳເດືອນ', 'ຂະບວນການກິດຈະກຳ', 'ອື່ນໆ'];
 
-export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps) {
+export function IncomeDialog({ isOpen, onOpenChange, onSave, income }: IncomeDialogProps) {
   const [students, setStudents] = useState<Student[]>([]);
   const form = useForm<IncomeFormData>({
     resolver: zodResolver(incomeSchema),
-    defaultValues: { date: new Date().toISOString().split('T')[0], description: '' },
+    defaultValues: {
+        date: new Date().toISOString().split('T')[0],
+        description: '',
+        source: undefined,
+        amount: 0,
+        paymentMethod: undefined,
+        studentId: undefined,
+        status: undefined
+    },
   });
 
   useEffect(() => {
@@ -45,31 +54,35 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
         if (isOpen) {
             const studentData = await getStudents();
             setStudents(studentData);
-            form.reset({ 
-                date: new Date().toISOString().split('T')[0], 
-                description: '',
-                source: undefined,
-                amount: 0,
-                paymentMethod: undefined,
-                studentId: undefined,
-                status: undefined
-            });
+            if (income) {
+                 form.reset(income);
+            } else {
+                 form.reset({ 
+                    date: new Date().toISOString().split('T')[0], 
+                    description: '',
+                    source: undefined,
+                    amount: 0,
+                    paymentMethod: undefined,
+                    studentId: undefined,
+                    status: undefined
+                });
+            }
         }
     }
     fetchStudents();
-  }, [isOpen, form]);
+  }, [isOpen, form, income]);
 
   const source = form.watch('source');
 
   const onSubmit = (data: IncomeFormData) => {
-    onSave(data);
+    onSave(data, income?.id);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>ເພີ່ມລາຍຮັບໃໝ່</DialogTitle>
+          <DialogTitle>{income ? 'ແກ້ໄຂຂໍ້ມູນລາຍຮັບ' : 'ເພີ່ມລາຍຮັບໃໝ່'}</DialogTitle>
           <DialogDescription>ກະລຸນາຕື່ມຂໍ້ມູນລາຍຮັບໃຫ້ຄົບຖ້ວນ.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -80,7 +93,7 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ແຫຼ່ງທີ່ມາ</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger><SelectValue placeholder="ເລືອກແຫຼ່ງທີ່ມາຂອງລາຍຮັບ" /></SelectTrigger>
                     </FormControl>
@@ -118,7 +131,7 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>ສະຖານະການຈ່າຍ</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                                 <SelectTrigger><SelectValue placeholder="ເລືອກສະຖານະ" /></SelectTrigger>
                             </FormControl>
@@ -140,7 +153,7 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ຈຳນວນເງິນ (LAK)</FormLabel>
-                  <FormControl><Input type="number" {...field} /></FormControl>
+                  <FormControl><Input type="number" {...field} value={field.value || ''} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -162,7 +175,7 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ວິທີຊຳລະ</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                         <SelectTrigger><SelectValue placeholder="ເລືອກວິທີຊຳລະ" /></SelectTrigger>
                     </FormControl>
@@ -181,7 +194,7 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ລາຍລະອຽດ</FormLabel>
-                  <FormControl><Textarea placeholder="ລາຍລະອຽດຂອງລາຍຮັບ..." {...field} /></FormControl>
+                  <FormControl><Textarea placeholder="ລາຍລະອຽດຂອງລາຍຮັບ..." {...field} value={field.value || ''} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}

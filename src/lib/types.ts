@@ -23,7 +23,7 @@ export interface Student {
 export interface Income {
     id: string;
     studentId?: string; // Now a string to match Firestore document ID
-    source: 'ເກັບເງິນຄັງປະຈຳເດືອນ' | 'ຂະບວນການກິດຈະກຳ' | string;
+    source: 'ເກັບເງິນຄັງປະຈຳເດືອນ' | 'ຂະບວນການກິດຈະກຳ' | 'ອື່ນໆ' | string;
     amount: number;
     date: string; // ISO String
     paymentMethod: 'ເງິນສົດ' | 'ໂອນຜ່ານທະນາຄານ';

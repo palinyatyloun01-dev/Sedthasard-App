@@ -6,16 +6,28 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { PlusCircle, ArrowLeft } from 'lucide-react';
 import type { Expense } from '@/lib/types';
-import { getExpenses, addExpense as apiAddExpense } from '@/lib/data';
+import { getExpenses, addExpense as apiAddExpense, updateExpense as apiUpdateExpense, deleteExpense as apiDeleteExpense } from '@/lib/data';
 import { DataTable } from '../students/data-table';
 import { columns } from './columns';
 import { ExpenseDialog } from './expense-dialog';
 import { useRouter } from 'next/navigation';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export default function ExpensesPage() {
     const [expenses, setExpenses] = useState<Expense[]>([]);
     const [isMounted, setIsMounted] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
     const router = useRouter();
 
     const fetchExpenses = async () => {
@@ -30,8 +42,36 @@ export default function ExpensesPage() {
     
     const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
-    const handleSaveExpense = async (expenseData: Omit<Expense, 'id'>) => {
-        await apiAddExpense(expenseData);
+    const handleAdd = () => {
+        setSelectedExpense(null);
+        setIsDialogOpen(true);
+    };
+
+    const handleEdit = (expense: Expense) => {
+        setSelectedExpense(expense);
+        setIsDialogOpen(true);
+    };
+
+    const handleDeleteRequest = (expense: Expense) => {
+        setSelectedExpense(expense);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (selectedExpense) {
+            await apiDeleteExpense(selectedExpense.id);
+            await fetchExpenses();
+        }
+        setIsDeleteDialogOpen(false);
+        setSelectedExpense(null);
+    }
+
+    const handleSaveExpense = async (expenseData: Omit<Expense, 'id'>, id?: string) => {
+         if (id) {
+            await apiUpdateExpense(id, expenseData);
+        } else {
+            await apiAddExpense(expenseData);
+        }
         await fetchExpenses();
         setIsDialogOpen(false);
     };
@@ -67,19 +107,34 @@ export default function ExpensesPage() {
                                 </CardTitle>
                             </CardContent>
                         </Card>
-                         <Button onClick={() => setIsDialogOpen(true)} size="sm" className="h-full">
+                         <Button onClick={handleAdd} size="sm" className="h-full">
                             <PlusCircle className="mr-2 h-4 w-4" />
                             ເພີ່ມ
                         </Button>
                     </div>
                 </div>
-                 <DataTable columns={columns} data={expenses} filterColumn='type' filterPlaceholder='ຄົ້ນຫາປະເພດລາຍຈ່າຍ...' />
+                 <DataTable columns={columns({ onEdit: handleEdit, onDelete: handleDeleteRequest })} data={expenses} filterColumn='type' filterPlaceholder='ຄົ້ນຫາປະເພດລາຍຈ່າຍ...' />
             </div>
             <ExpenseDialog
                 isOpen={isDialogOpen}
                 onOpenChange={setIsDialogOpen}
                 onSave={handleSaveExpense}
+                expense={selectedExpense}
             />
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>ທ່ານແນ່ໃຈບໍ່?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        ການກະທຳນີ້ບໍ່ສາມາດຍົກເລີກໄດ້. ນີ້ຈະເປັນການລຶບຂໍ້ມູນລາຍການນີ້ຖາວອນ.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>ຍົກເລີກ</AlertDialogCancel>
+                    <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">ລຶບ</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </AppLayout>
     );
 }

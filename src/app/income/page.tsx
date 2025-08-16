@@ -7,16 +7,28 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { PlusCircle, ArrowLeft } from 'lucide-react';
 import type { Income } from '@/lib/types';
-import { getIncomes, addIncome as apiAddIncome } from '@/lib/data';
+import { getIncomes, addIncome as apiAddIncome, updateIncome as apiUpdateIncome, deleteIncome as apiDeleteIncome } from '@/lib/data';
 import { DataTable } from '../students/data-table'; // Reusing the data-table component
 import { columns } from './columns';
 import { IncomeDialog } from './income-dialog';
 import { useRouter } from 'next/navigation';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export default function IncomePage() {
     const [incomes, setIncomes] = useState<Income[]>([]);
     const [isMounted, setIsMounted] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [selectedIncome, setSelectedIncome] = useState<Income | null>(null);
     const router = useRouter();
 
     const fetchIncomes = async () => {
@@ -31,8 +43,36 @@ export default function IncomePage() {
     
     const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
 
-    const handleSaveIncome = async (incomeData: Omit<Income, 'id'>) => {
-        await apiAddIncome(incomeData);
+    const handleAdd = () => {
+        setSelectedIncome(null);
+        setIsDialogOpen(true);
+    };
+
+    const handleEdit = (income: Income) => {
+        setSelectedIncome(income);
+        setIsDialogOpen(true);
+    };
+
+    const handleDeleteRequest = (income: Income) => {
+        setSelectedIncome(income);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (selectedIncome) {
+            await apiDeleteIncome(selectedIncome.id);
+            await fetchIncomes();
+        }
+        setIsDeleteDialogOpen(false);
+        setSelectedIncome(null);
+    }
+
+    const handleSaveIncome = async (incomeData: Omit<Income, 'id'>, id?: string) => {
+        if (id) {
+            await apiUpdateIncome(id, incomeData);
+        } else {
+            await apiAddIncome(incomeData);
+        }
         await fetchIncomes();
         setIsDialogOpen(false);
     };
@@ -68,19 +108,34 @@ export default function IncomePage() {
                                 </CardTitle>
                             </CardContent>
                         </Card>
-                         <Button onClick={() => setIsDialogOpen(true)} size="sm" className="h-full">
+                         <Button onClick={handleAdd} size="sm" className="h-full">
                             <PlusCircle className="mr-2 h-4 w-4" />
                             ເພີ່ມ
                         </Button>
                     </div>
                 </div>
-                <DataTable columns={columns} data={incomes} filterColumn='source' filterPlaceholder='ຄົ້ນຫາແຫຼ່ງທີ່ມາ...' />
+                <DataTable columns={columns({ onEdit: handleEdit, onDelete: handleDeleteRequest })} data={incomes} filterColumn='source' filterPlaceholder='ຄົ້ນຫາແຫຼ່ງທີ່ມາ...' />
             </div>
             <IncomeDialog 
                 isOpen={isDialogOpen}
                 onOpenChange={setIsDialogOpen}
                 onSave={handleSaveIncome}
+                income={selectedIncome}
             />
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>ທ່ານແນ່ໃຈບໍ່?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        ການກະທຳນີ້ບໍ່ສາມາດຍົກເລີກໄດ້. ນີ້ຈະເປັນການລຶບຂໍ້ມູນລາຍການນີ້ຖາວອນ.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>ຍົກເລີກ</AlertDialogCancel>
+                    <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">ລຶບ</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </AppLayout>
     );
 }

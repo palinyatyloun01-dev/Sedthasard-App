@@ -1,3 +1,4 @@
+
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -9,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
+import type { Expense } from '@/lib/types';
 
 const expenseSchema = z.object({
   type: z.enum(['ຄ່າເອກະສານ', 'ຄ່ານ້ຳ', 'ຄ່າຊອງຂາວ', 'ຄ່າສອບເສັງຂຽນ', 'ຄ່າສອບເສັງປາກເປົ່າ', 'ອື່ນໆ']),
@@ -25,12 +27,13 @@ type ExpenseFormData = z.infer<typeof expenseSchema>;
 interface ExpenseDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onSave: (data: Omit<ExpenseFormData, 'id'>) => void;
+  onSave: (data: Omit<ExpenseFormData, 'id'>, id?: string) => void;
+  expense: Expense | null;
 }
 
 const expenseTypes = ['ຄ່າເອກະສານ', 'ຄ່ານ້ຳ', 'ຄ່າຊອງຂາວ', 'ຄ່າສອບເສັງຂຽນ', 'ຄ່າສອບເສັງປາກເປົ່າ', 'ອື່ນໆ'];
 
-export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogProps) {
+export function ExpenseDialog({ isOpen, onOpenChange, onSave, expense }: ExpenseDialogProps) {
   const form = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema),
     defaultValues: { date: new Date().toISOString().split('T')[0], description: '' },
@@ -38,26 +41,30 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
 
   useEffect(() => {
     if (isOpen) {
-      form.reset({ 
-        date: new Date().toISOString().split('T')[0], 
-        description: '',
-        type: undefined,
-        amount: 0,
-      });
+      if (expense) {
+        form.reset(expense);
+      } else {
+        form.reset({ 
+          date: new Date().toISOString().split('T')[0], 
+          description: '',
+          type: undefined,
+          amount: 0,
+        });
+      }
     }
-  }, [isOpen, form]);
+  }, [isOpen, form, expense]);
 
   const type = form.watch('type');
 
   const onSubmit = (data: ExpenseFormData) => {
-    onSave(data);
+    onSave(data, expense?.id);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>ເພີ່ມລາຍຈ່າຍໃໝ່</DialogTitle>
+          <DialogTitle>{expense ? 'ແກ້ໄຂຂໍ້ມູນລາຍຈ່າຍ' : 'ເພີ່ມລາຍຈ່າຍໃໝ່'}</DialogTitle>
           <DialogDescription>ກະລຸນາຕື່ມຂໍ້ມູນລາຍຈ່າຍໃຫ້ຄົບຖ້ວນ.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -68,7 +75,7 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ປະເພດລາຍຈ່າຍ</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger><SelectValue placeholder="ເລືອກປະເພດລາຍຈ່າຍ" /></SelectTrigger>
                     </FormControl>
@@ -86,7 +93,7 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ລາຍລະອຽດ</FormLabel>
-                    <FormControl><Textarea placeholder="ລາຍລະອຽດຂອງລາຍຈ່າຍ..." {...field} /></FormControl>
+                    <FormControl><Textarea placeholder="ລາຍລະອຽດຂອງລາຍຈ່າຍ..." {...field} value={field.value || ''} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -97,7 +104,7 @@ export function ExpenseDialog({ isOpen, onOpenChange, onSave }: ExpenseDialogPro
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ຈຳນວນເງິນ (LAK)</FormLabel>
-                  <FormControl><Input type="number" {...field} /></FormControl>
+                  <FormControl><Input type="number" {...field} value={field.value || ''} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}

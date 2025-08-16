@@ -84,6 +84,17 @@ export const addIncome = async (income: Omit<Income, 'id'>): Promise<Income> => 
     return { id: docRef.id, ...income };
 };
 
+export const updateIncome = async (id: string, updatedData: Partial<Omit<Income, 'id'>>): Promise<void> => {
+    const docRef = doc(db, 'incomes', id);
+    await updateDoc(docRef, updatedData);
+};
+
+export const deleteIncome = async (id: string): Promise<void> => {
+    const docRef = doc(db, 'incomes', id);
+    await deleteDoc(docRef);
+};
+
+
 export const getExpenses = async (): Promise<Expense[]> => {
     const snapshot = await getDocs(query(expensesCollection, orderBy("date", "desc")));
     const expenses: Expense[] = [];
@@ -96,4 +107,14 @@ export const getExpenses = async (): Promise<Expense[]> => {
 export const addExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => {
     const docRef = await addDoc(expensesCollection, expense);
     return { id: docRef.id, ...expense };
+};
+
+export const updateExpense = async (id: string, updatedData: Partial<Omit<Expense, 'id'>>): Promise<void> => {
+    const docRef = doc(db, 'expenses', id);
+    await updateDoc(docRef, updatedData);
+};
+
+export const deleteExpense = async (id: string): Promise<void> => {
+    const docRef = doc(db, 'expenses', id);
+    await deleteDoc(docRef);
 };

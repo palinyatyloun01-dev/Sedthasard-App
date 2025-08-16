@@ -6,6 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { getStudentById } from '@/lib/data';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
+
+interface ColumnsProps {
+    onEdit: (income: Income) => void;
+    onDelete: (income: Income) => void;
+}
 
 const StudentName = ({ studentId }: { studentId?: string }) => {
     const [studentName, setStudentName] = useState('ກຳລັງໂຫຼດ...');
@@ -26,7 +34,7 @@ const StudentName = ({ studentId }: { studentId?: string }) => {
 }
 
 
-export const columns: ColumnDef<Income>[] = [
+export const columns = ({ onEdit, onDelete }: ColumnsProps): ColumnDef<Income>[] => [
     {
         accessorKey: "date",
         header: "ວັນທີ",
@@ -64,5 +72,33 @@ export const columns: ColumnDef<Income>[] = [
     {
         accessorKey: 'paymentMethod',
         header: 'ວິທີຊຳລະ',
-    }
+    },
+     {
+        id: "actions",
+        cell: ({ row }) => {
+            const income = row.original;
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">ເປີດເມນູ</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>ການກະທຳ</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => onEdit(income)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            <span>ແກ້ໄຂ</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => onDelete(income)} className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            <span>ລຶບ</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        },
+    },
 ];
