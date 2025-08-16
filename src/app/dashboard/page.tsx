@@ -1,6 +1,6 @@
 
 'use client';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Users, TrendingUp, TrendingDown, BarChart, Search, PlusCircle } from "lucide-react";
@@ -12,14 +12,14 @@ import { IncomeDialog } from "../income/income-dialog";
 import { ExpenseDialog } from "../expenses/expense-dialog";
 import { addIncome, addExpense } from "@/lib/data";
 import type { Income, Expense } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
     const { translations } = useLanguage();
+    const router = useRouter();
     const [isIncomeDialogOpen, setIsIncomeDialogOpen] = useState(false);
     const [isExpenseDialogOpen, setIsExpenseDialogOpen] = useState(false);
-
-    // Dummy state change to trigger re-renders if needed, though with Firestore it's less direct.
-    const [dataVersion, setDataVersion] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const menuItems = [
         {
@@ -50,14 +50,20 @@ export default function DashboardPage() {
 
     const handleSaveIncome = async (incomeData: Omit<Income, 'id'>) => {
         await addIncome(incomeData);
-        setDataVersion(v => v + 1); // Trigger refresh in other components if needed
         setIsIncomeDialogOpen(false);
+        router.refresh();
     };
 
     const handleSaveExpense = async (expenseData: Omit<Expense, 'id'>) => {
         await addExpense(expenseData);
-        setDataVersion(v => v + 1); // Trigger refresh in other components if needed
         setIsExpenseDialogOpen(false);
+        router.refresh();
+    };
+
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && searchQuery.trim() !== '') {
+            router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+        }
     };
 
     return (
@@ -81,6 +87,9 @@ export default function DashboardPage() {
                         </CardHeader>
                         <CardContent className="p-4 pt-0">
                             <Input 
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleSearch}
                                 placeholder={translations.dashboard.searchCard.placeholder}
                                 className="text-sm"
                             />

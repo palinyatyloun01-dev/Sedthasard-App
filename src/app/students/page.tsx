@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, ArrowLeft } from 'lucide-react';
 import type { Student } from '@/lib/types';
 import { getStudents, addStudent as apiAddStudent, updateStudent as apiUpdateStudent, deleteStudent as apiDeleteStudent } from '@/lib/data';
 import { DataTable } from './data-table';
 import { columns } from './columns';
 import { StudentDialog } from './student-dialog';
 import { StudentDetailDialog } from './student-detail-dialog';
+import { useRouter } from 'next/navigation';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,6 +30,7 @@ export default function StudentsPage() {
     const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+    const router = useRouter();
 
     const fetchStudents = async () => {
         const studentData = await getStudents();
@@ -93,9 +95,14 @@ export default function StudentsPage() {
         <AppLayout>
             <div className="space-y-4">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                    <div className="space-y-1">
-                        <h1 className="text-xl md:text-2xl font-bold">ຂໍ້ມູນນັກສຶກສາ ({students.length} ຄົນ)</h1>
-                        <p className="text-sm text-muted-foreground">ລາຍຊື່ນັກສຶກສາທັງໝົດ</p>
+                    <div className="flex items-center gap-2">
+                         <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                            <ArrowLeft className="h-5 w-5" />
+                        </Button>
+                        <div className="space-y-1">
+                            <h1 className="text-xl md:text-2xl font-bold">ຂໍ້ມູນນັກສຶກສາ ({students.length} ຄົນ)</h1>
+                            <p className="text-sm text-muted-foreground">ລາຍຊື່ນັກສຶກສາທັງໝົດ</p>
+                        </div>
                     </div>
                     <Button onClick={handleAddStudent} size="sm">
                         <PlusCircle className="mr-2 h-4 w-4" />

@@ -84,6 +84,11 @@ export interface Translation {
         },
         addIncomeButton: string;
         addExpenseButton: string;
+    };
+    search: {
+        title: string;
+        resultsFound: string;
+        noResults: string;
     }
 }
 
@@ -168,10 +173,15 @@ const en: Translation = {
         },
         searchCard: {
             title: 'Search Data',
-            placeholder: 'Type to search for students, income, or expenses...',
+            placeholder: 'Type to search all data and press Enter...',
         },
         addIncomeButton: 'Add Income',
         addExpenseButton: 'Add Expense',
+    },
+    search: {
+        title: 'Search Results',
+        resultsFound: 'Found {count} results for "{query}"',
+        noResults: 'No results found for "{query}"',
     }
 };
 
@@ -256,10 +266,15 @@ const lo: Translation = {
         },
         searchCard: {
             title: 'ຄົ້ນຫາຂໍ້ມູນ',
-            placeholder: 'ພິມເພື່ອຄົ້ນຫາຂໍ້ມູນນັກສຶກສາ, ລາຍຮັບ, ຫຼື ລາຍຈ່າຍ...',
+            placeholder: 'ພິມເພື່ອຄົ້ນຫາຂໍ້ມູນທັງໝົດ ແລ້ວກົດ Enter...',
         },
         addIncomeButton: 'ເພີ່ມລາຍຮັບ',
         addExpenseButton: 'ເພີ່ມລາຍຈ່າຍ',
+    },
+    search: {
+        title: 'ຜົນການຄົ້ນຫາ',
+        resultsFound: 'ພົບ {count} ລາຍການ ສຳລັບ "{query}"',
+        noResults: 'ບໍ່ພົບຂໍ້ມູນສຳລັບ "{query}"',
     }
 };
 
@@ -344,10 +359,15 @@ const zh: Translation = {
         },
         searchCard: {
             title: '搜索数据',
-            placeholder: '输入以搜索学生、收入或支出...',
+            placeholder: '输入以搜索所有数据并按 Enter...',
         },
         addIncomeButton: '添加收入',
         addExpenseButton: '添加支出',
+    },
+    search: {
+        title: '搜索结果',
+        resultsFound: '找到 {count} 条关于 “{query}” 的结果',
+        noResults: '未找到关于 “{query}” 的结果',
     }
 };
 
@@ -432,10 +452,15 @@ const vi: Translation = {
         },
         searchCard: {
             title: 'Tìm kiếm dữ liệu',
-            placeholder: 'Nhập để tìm kiếm sinh viên, thu nhập hoặc chi phí...',
+            placeholder: 'Nhập để tìm kiếm tất cả dữ liệu và nhấn Enter...',
         },
         addIncomeButton: 'Thêm thu nhập',
         addExpenseButton: 'Thêm chi phí',
+    },
+    search: {
+        title: 'Kết quả tìm kiếm',
+        resultsFound: 'Tìm thấy {count} kết quả cho "{query}"',
+        noResults: 'Không tìm thấy kết quả nào cho "{query}"',
     }
 };
 
@@ -520,10 +545,15 @@ const th: Translation = {
         },
         searchCard: {
             title: 'ค้นหาข้อมูล',
-            placeholder: 'พิมพ์เพื่อค้นหานักศึกษา รายรับ หรือรายจ่าย...',
+            placeholder: 'พิมพ์เพื่อค้นหาข้อมูลทั้งหมดแล้วกด Enter...',
         },
         addIncomeButton: 'เพิ่มรายรับ',
         addExpenseButton: 'เพิ่มรายจ่าย',
+    },
+    search: {
+        title: 'ผลการค้นหา',
+        resultsFound: 'พบ {count} รายการสำหรับ "{query}"',
+        noResults: 'ไม่พบข้อมูลสำหรับ "{query}"',
     }
 };
 

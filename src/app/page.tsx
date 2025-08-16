@@ -3,13 +3,15 @@
 
 import { useState, useRef, useEffect, type ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { Shield, Eye, EyeOff, ImagePlus } from 'lucide-react';
+import { Eye, EyeOff, ImagePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import Logo from '@/components/Logo';
 import { useLanguage } from '@/context/language-context';
+
+const BACKGROUND_IMAGE_KEY = 'login-background-image';
 
 export default function LoginPage() {
   const [password, setPassword] = useState('');
@@ -20,8 +22,11 @@ export default function LoginPage() {
   const { toast } = useToast();
   const { translations, language, setLanguage } = useLanguage();
 
-  // Set default language to Lao on first load
   useEffect(() => {
+    const savedImage = localStorage.getItem(BACKGROUND_IMAGE_KEY);
+    if (savedImage) {
+      setBackgroundImage(savedImage);
+    }
     if (!localStorage.getItem('language')) {
       setLanguage('lo');
     }
@@ -52,7 +57,9 @@ export default function LoginPage() {
       const reader = new FileReader();
       reader.onload = (event) => {
         if(event.target?.result) {
-          setBackgroundImage(event.target.result as string);
+          const dataUrl = event.target.result as string;
+          setBackgroundImage(dataUrl);
+          localStorage.setItem(BACKGROUND_IMAGE_KEY, dataUrl);
         }
       };
       reader.readAsDataURL(file);

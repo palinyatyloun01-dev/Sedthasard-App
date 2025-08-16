@@ -14,7 +14,9 @@ import type { Income, Expense } from '@/lib/types';
 import FinancialSummary from './FinancialSummary';
 import BarChartReport from './BarChartReport';
 import PieChartReport from './PieChartReport';
-
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type TimePeriod = 'day' | 'week' | 'month' | 'year';
 
@@ -25,12 +27,16 @@ export default function ReportPage() {
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('month');
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAllData = async () => {
+        setIsLoading(true);
         const [incomeData, expenseData] = await Promise.all([getIncomes(), getExpenses()]);
         setIncomes(incomeData);
         setExpenses(expenseData);
+        setIsLoading(false);
     }
     fetchAllData();
   }, []);
@@ -64,10 +70,25 @@ export default function ReportPage() {
   const totalExpense = filteredExpenses.reduce((acc, item) => acc + item.amount, 0);
   const balance = totalIncome - totalExpense;
 
+   if (isLoading) {
+    return (
+        <AppLayout>
+            <div className="flex h-full items-center justify-center">
+                <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
+            </div>
+        </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <div className="space-y-4">
-        <h1 className="text-xl md:text-2xl font-bold">ລາຍງານສະຫຼຸບ</h1>
+        <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-xl md:text-2xl font-bold">ລາຍງານສະຫຼຸບ</h1>
+        </div>
         <div className="grid gap-2 md:grid-cols-3">
           <Card className='border-2'>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 p-2 pb-0 md:p-4 md:pb-2">

@@ -7,10 +7,11 @@ import {
     updateDoc,
     doc,
     getDoc,
-    where,
     writeBatch,
     deleteDoc,
     orderBy,
+    limit,
+    startAfter,
 } from 'firebase/firestore';
 import type { Student, Income, Expense } from './types';
 import { db } from './firebase';
@@ -41,7 +42,7 @@ export const getStudentById = async (id: string): Promise<Student | undefined> =
 };
 
 export const addStudent = async (student: Omit<Student, 'id' | 'order'>): Promise<Student> => {
-    const q = query(studentsCollection, orderBy("order", "desc"));
+    const q = query(studentsCollection, orderBy("order", "desc"), limit(1));
     const querySnapshot = await getDocs(q);
     const maxOrder = querySnapshot.docs.length > 0 ? querySnapshot.docs[0].data().order : 0;
 

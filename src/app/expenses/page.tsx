@@ -4,17 +4,19 @@ import { useEffect, useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, ArrowLeft } from 'lucide-react';
 import type { Expense } from '@/lib/types';
 import { getExpenses, addExpense as apiAddExpense } from '@/lib/data';
 import { DataTable } from '../students/data-table';
 import { columns } from './columns';
 import { ExpenseDialog } from './expense-dialog';
+import { useRouter } from 'next/navigation';
 
 export default function ExpensesPage() {
     const [expenses, setExpenses] = useState<Expense[]>([]);
     const [isMounted, setIsMounted] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const router = useRouter();
 
     const fetchExpenses = async () => {
         const expensesData = await getExpenses();
@@ -48,7 +50,12 @@ export default function ExpensesPage() {
         <AppLayout>
             <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <h1 className="text-xl md:text-2xl font-bold">ລາຍຈ່າຍ</h1>
+                    <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                            <ArrowLeft className="h-5 w-5" />
+                        </Button>
+                        <h1 className="text-xl md:text-2xl font-bold">ລາຍຈ່າຍ</h1>
+                    </div>
                     <div className='flex items-center gap-2'>
                         <Card className="flex-1 text-right border-2">
                            <CardHeader className="p-2 pb-0">
