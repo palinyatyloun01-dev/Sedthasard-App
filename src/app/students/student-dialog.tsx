@@ -1,3 +1,4 @@
+
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -37,7 +38,7 @@ type StudentFormData = z.infer<typeof studentSchema>;
 interface StudentDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onSave: (data: Omit<Student, 'id' | 'order'>, id?: number) => void;
+  onSave: (data: Omit<Student, 'id' | 'order'>, id?: string) => void;
   student: Student | null;
 }
 

@@ -17,16 +17,21 @@ export default function IncomePage() {
     const [isMounted, setIsMounted] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+    const fetchIncomes = async () => {
+        const incomeData = await getIncomes();
+        setIncomes(incomeData);
+    };
+
     useEffect(() => {
-        setIncomes(getIncomes());
+        fetchIncomes();
         setIsMounted(true);
     }, []);
     
     const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
 
-    const handleSaveIncome = (incomeData: Omit<Income, 'id'>) => {
-        apiAddIncome(incomeData);
-        setIncomes(getIncomes());
+    const handleSaveIncome = async (incomeData: Omit<Income, 'id'>) => {
+        await apiAddIncome(incomeData);
+        await fetchIncomes();
         setIsDialogOpen(false);
     };
 
@@ -43,27 +48,26 @@ export default function IncomePage() {
     return (
         <AppLayout>
             <div className="space-y-4">
-                <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                        <DataTable columns={columns} data={incomes} />
-                    </div>
-                    <div className='flex flex-col items-end gap-2'>
-                        <Button onClick={() => setIsDialogOpen(true)}>
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            ເພີ່ມລາຍຮັບ
-                        </Button>
-                        <Card className="min-w-48 text-right border-2">
+                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <h1 className="text-xl md:text-2xl font-bold">ລາຍຮັບ</h1>
+                    <div className='flex items-center gap-2'>
+                        <Card className="flex-1 text-right border-2">
                            <CardHeader className="p-2 pb-0">
                                 <CardDescription>ລາຍຮັບລວມ</CardDescription>
                             </CardHeader>
                             <CardContent className="p-2 pt-0">
-                                <CardTitle className="text-2xl text-green-400">
+                                <CardTitle className="text-lg md:text-xl text-green-400">
                                     {totalIncome.toLocaleString()} LAK
                                 </CardTitle>
                             </CardContent>
                         </Card>
+                         <Button onClick={() => setIsDialogOpen(true)} size="sm" className="h-full">
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            ເພີ່ມ
+                        </Button>
                     </div>
                 </div>
+                <DataTable columns={columns} data={incomes} filterColumn='source' filterPlaceholder='ຄົ້ນຫາແຫຼ່ງທີ່ມາ...' />
             </div>
             <IncomeDialog 
                 isOpen={isDialogOpen}

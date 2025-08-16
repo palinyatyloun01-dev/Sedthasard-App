@@ -16,16 +16,21 @@ export default function ExpensesPage() {
     const [isMounted, setIsMounted] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+    const fetchExpenses = async () => {
+        const expensesData = await getExpenses();
+        setExpenses(expensesData);
+    };
+
     useEffect(() => {
-        setExpenses(getExpenses());
+        fetchExpenses();
         setIsMounted(true);
     }, []);
     
     const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
-    const handleSaveExpense = (expenseData: Omit<Expense, 'id'>) => {
-        apiAddExpense(expenseData);
-        setExpenses(getExpenses());
+    const handleSaveExpense = async (expenseData: Omit<Expense, 'id'>) => {
+        await apiAddExpense(expenseData);
+        await fetchExpenses();
         setIsDialogOpen(false);
     };
 
@@ -42,27 +47,26 @@ export default function ExpensesPage() {
     return (
         <AppLayout>
             <div className="space-y-4">
-                <div className="flex items-start justify-between gap-4">
-                     <div className="flex-1">
-                        <DataTable columns={columns} data={expenses} />
-                    </div>
-                    <div className='flex flex-col items-end gap-2'>
-                        <Button onClick={() => setIsDialogOpen(true)}>
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            ເພີ່ມລາຍຈ່າຍ
-                        </Button>
-                        <Card className="min-w-48 text-right border-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <h1 className="text-xl md:text-2xl font-bold">ລາຍຈ່າຍ</h1>
+                    <div className='flex items-center gap-2'>
+                        <Card className="flex-1 text-right border-2">
                            <CardHeader className="p-2 pb-0">
                                 <CardDescription>ລາຍຈ່າຍລວມ</CardDescription>
                             </CardHeader>
                             <CardContent className="p-2 pt-0">
-                                <CardTitle className="text-2xl text-destructive">
+                                <CardTitle className="text-lg md:text-xl text-destructive">
                                     {totalExpenses.toLocaleString()} LAK
                                 </CardTitle>
                             </CardContent>
                         </Card>
+                         <Button onClick={() => setIsDialogOpen(true)} size="sm" className="h-full">
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            ເພີ່ມ
+                        </Button>
                     </div>
                 </div>
+                 <DataTable columns={columns} data={expenses} filterColumn='type' filterPlaceholder='ຄົ້ນຫາປະເພດລາຍຈ່າຍ...' />
             </div>
             <ExpenseDialog
                 isOpen={isDialogOpen}

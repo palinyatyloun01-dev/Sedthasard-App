@@ -27,8 +27,12 @@ export default function ReportPage() {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('month');
 
   useEffect(() => {
-    setIncomes(getIncomes());
-    setExpenses(getExpenses());
+    const fetchAllData = async () => {
+        const [incomeData, expenseData] = await Promise.all([getIncomes(), getExpenses()]);
+        setIncomes(incomeData);
+        setExpenses(expenseData);
+    }
+    fetchAllData();
   }, []);
 
   useEffect(() => {
@@ -63,30 +67,30 @@ export default function ReportPage() {
   return (
     <AppLayout>
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold">ລາຍງານສະຫຼຸບ</h1>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <h1 className="text-xl md:text-2xl font-bold">ລາຍງານສະຫຼຸບ</h1>
+        <div className="grid gap-2 md:grid-cols-3">
           <Card className='border-2'>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">ລາຍຮັບລວມ</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-2 pb-0 md:p-4 md:pb-2">
+              <CardTitle className="text-xs md:text-sm font-medium">ລາຍຮັບລວມ</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-400">{totalIncome.toLocaleString()} LAK</div>
+            <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+              <div className="text-lg md:text-2xl font-bold text-green-400">{totalIncome.toLocaleString()} LAK</div>
             </CardContent>
           </Card>
           <Card className='border-2'>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">ລາຍຈ່າຍລວມ</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-2 pb-0 md:p-4 md:pb-2">
+              <CardTitle className="text-xs md:text-sm font-medium">ລາຍຈ່າຍລວມ</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-destructive">{totalExpense.toLocaleString()} LAK</div>
+            <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+              <div className="text-lg md:text-2xl font-bold text-destructive">{totalExpense.toLocaleString()} LAK</div>
             </CardContent>
           </Card>
           <Card className='border-2'>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">ຍອດເຫຼືອ</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-2 pb-0 md:p-4 md:pb-2">
+              <CardTitle className="text-xs md:text-sm font-medium">ຍອດເຫຼືອ</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${balance >= 0 ? 'text-primary' : 'text-destructive'}`}>
+            <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+              <div className={`text-lg md:text-2xl font-bold ${balance >= 0 ? 'text-primary' : 'text-destructive'}`}>
                 {balance.toLocaleString()} LAK
               </div>
             </CardContent>
@@ -102,7 +106,7 @@ export default function ReportPage() {
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="bar-chart">
-                        <TabsList>
+                        <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="bar-chart">ລາຍງານແບບແທ່ງ</TabsTrigger>
                             <TabsTrigger value="pie-chart">ລາຍງານແບບວົງມົນ</TabsTrigger>
                         </TabsList>
@@ -121,8 +125,8 @@ export default function ReportPage() {
               <CardHeader>
                 <CardTitle>ເລືອກຊ່ວງເວລາ</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="flex flex-col items-center">
+                <div className="space-y-4 w-full">
                   <Select value={timePeriod} onValueChange={(v) => setTimePeriod(v as TimePeriod)}>
                     <SelectTrigger>
                       <SelectValue placeholder="ເລືອກຊ່ວງເວລາ" />
@@ -134,13 +138,15 @@ export default function ReportPage() {
                       <SelectItem value="year">ປີ</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    className="rounded-md border-2"
-                    initialFocus
-                  />
+                  <div className="flex justify-center">
+                    <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        className="rounded-md border-2"
+                        initialFocus
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>

@@ -132,11 +132,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
-      <div className="flex h-20 items-center justify-center border-b border-b-destructive">
+      <div className="flex h-16 items-center justify-center border-b border-b-destructive">
         <Logo />
       </div>
       <ScrollArea className="flex-1">
-        <nav className="flex flex-col gap-2 p-4">
+        <nav className="flex flex-col gap-1 p-2">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -188,16 +188,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`min-h-screen w-full ${language === 'en' ? 'font-english' : 'font-body'}`}>
       <div className="flex flex-col">
-        <header className="flex h-16 items-center justify-between gap-4 border-b border-b-destructive bg-card px-4 lg:px-6">
+        <header className="flex h-16 items-center justify-between gap-4 border-b border-b-destructive bg-card px-2 md:px-6">
             <div className="flex items-center gap-2">
                 <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="ghost">
-                        <Menu className="h-6 w-6 mr-2" />
-                        {translations.menu}
+                      <Button variant="ghost" size="sm">
+                        <Menu className="h-5 w-5 mr-1" />
+                        <span className="hidden sm:inline">{translations.menu}</span>
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="flex flex-col p-0 bg-card border-r-destructive w-[280px]">
+                    <SheetContent side="left" className="flex flex-col p-0 bg-card border-r-destructive w-[260px]">
                        <SheetHeader className="p-4 sr-only">
                             <SheetTitle>{translations.menu}</SheetTitle>
                         </SheetHeader>
@@ -207,18 +207,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex flex-1 items-center justify-center gap-2">
                 <Logo />
-                <h1 className="text-xl font-semibold hidden sm:block">Sedthasard App</h1>
+                <h1 className="text-lg md:text-xl font-semibold hidden sm:block">Sedthasard App</h1>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline">
-                            <CurrentLanguageIcon className="h-4 w-4 mr-2" />
-                            {languageOptions.find(opt => opt.code === language)?.name}
-                            <ChevronDown className="h-4 w-4 ml-2" />
+                        <Button variant="outline" size="sm">
+                            <CurrentLanguageIcon className="h-4 w-4" />
+                            <span className="hidden md:inline ml-2">{languageOptions.find(opt => opt.code === language)?.name}</span>
+                            <ChevronDown className="h-4 w-4 ml-1 md:ml-2" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent align="end">
                         {languageOptions.map(opt => (
                             <DropdownMenuItem key={opt.code} onClick={() => setLanguage(opt.code as any)}>
                                 <opt.icon className="h-4 w-4 mr-2" />
@@ -229,9 +229,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </DropdownMenu>
             </div>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">
-          <ScrollArea className="h-[calc(100vh-8rem)]">
-            <div className="pr-4">
+        <main className="flex flex-1 flex-col gap-4 p-2 md:p-6 bg-background">
+          <ScrollArea className="h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)]">
+            <div className="pr-2 md:pr-4">
               {children}
             </div>
           </ScrollArea>

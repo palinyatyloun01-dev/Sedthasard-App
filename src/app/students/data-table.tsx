@@ -1,3 +1,4 @@
+
 'use client';
 import {
     ColumnDef,
@@ -20,13 +21,16 @@ import {
 } from '@/components/ui/table';
 import React from 'react';
 import { useLanguage } from '@/context/language-context';
+import { Input } from "@/components/ui/input"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    filterColumn: string;
+    filterPlaceholder: string;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, filterColumn, filterPlaceholder }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const { language } = useLanguage();
@@ -48,7 +52,17 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     });
 
     return (
-        <div>
+        <div className="space-y-4">
+            <div className="flex items-center">
+                <Input
+                    placeholder={filterPlaceholder}
+                    value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn(filterColumn)?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm"
+                />
+            </div>
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>

@@ -1,9 +1,30 @@
+
 'use client';
 import type { ColumnDef } from '@tanstack/react-table';
-import type { Income } from '@/lib/types';
+import type { Income, Student } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
 import { getStudentById } from '@/lib/data';
 import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
+
+const StudentName = ({ studentId }: { studentId?: string }) => {
+    const [studentName, setStudentName] = useState('ກຳລັງໂຫຼດ...');
+    
+    useEffect(() => {
+        const fetchStudent = async () => {
+            if (studentId) {
+                const student = await getStudentById(studentId);
+                setStudentName(student ? student.name : "ບໍ່ພົບຂໍ້ມູນ");
+            } else {
+                 setStudentName("ທົ່ວໄປ");
+            }
+        };
+        fetchStudent();
+    }, [studentId]);
+
+    return <span>{studentName}</span>;
+}
+
 
 export const columns: ColumnDef<Income>[] = [
     {
@@ -28,12 +49,7 @@ export const columns: ColumnDef<Income>[] = [
     {
         accessorKey: 'studentId',
         header: 'ນັກສຶກສາ',
-        cell: ({ row }) => {
-            const studentId = row.original.studentId;
-            if (!studentId) return "ທົ່ວໄປ";
-            const student = getStudentById(studentId);
-            return student ? student.name : "ບໍ່ພົບຂໍ້ມູນ";
-        },
+        cell: ({ row }) => <StudentName studentId={row.original.studentId} />,
     },
     {
         accessorKey: 'status',

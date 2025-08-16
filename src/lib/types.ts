@@ -1,5 +1,6 @@
+
 export interface Student {
-    id: number;
+    id: string;
     order: number;
     class: string;
     name: string;
@@ -20,8 +21,8 @@ export interface Student {
 }
   
 export interface Income {
-    id: number;
-    studentId?: number; // Optional if it's a general income
+    id: string;
+    studentId?: string; // Now a string to match Firestore document ID
     source: 'ເກັບເງິນຄັງປະຈຳເດືອນ' | 'ຂະບວນການກິດຈະກຳ' | string;
     amount: number;
     date: string; // ISO String
@@ -31,7 +32,7 @@ export interface Income {
 }
 
 export interface Expense {
-    id: number;
+    id: string;
     type: 'ຄ່າເອກະສານ' | 'ຄ່ານ້ຳ' | 'ຄ່າຊອງຂາວ' | 'ຄ່າສອບເສັງຂຽນ' | 'ຄ່າສອບເສັງປາກເປົ່າ' | 'ອື່ນໆ';
     description?: string;
     amount: number;

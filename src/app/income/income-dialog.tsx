@@ -1,3 +1,4 @@
+
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -17,7 +18,7 @@ const incomeSchema = z.object({
   amount: z.coerce.number().min(1, "ຈຳນວນເງິນຕ້ອງຫຼາຍກວ່າ 0"),
   date: z.string().min(1, "ກະລຸນາເລືອກວັນທີ"),
   paymentMethod: z.enum(['ເງິນສົດ', 'ໂອນຜ່ານທະນາຄານ']),
-  studentId: z.coerce.number().optional(),
+  studentId: z.string().optional(),
   status: z.enum(['ຈ່າຍແລ້ວ', 'ຍັງບໍ່ຈ່າຍ', 'ຄ້າງຈ່າຍ']).optional(),
   description: z.string().optional(),
 });
@@ -40,19 +41,22 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
   });
 
   useEffect(() => {
-    // We get the students every time the dialog opens to ensure fresh data.
-    if (isOpen) {
-        setStudents(getStudents());
-        form.reset({ 
-            date: new Date().toISOString().split('T')[0], 
-            description: '',
-            source: undefined,
-            amount: 0,
-            paymentMethod: undefined,
-            studentId: undefined,
-            status: undefined
-        });
+    async function fetchStudents() {
+        if (isOpen) {
+            const studentData = await getStudents();
+            setStudents(studentData);
+            form.reset({ 
+                date: new Date().toISOString().split('T')[0], 
+                description: '',
+                source: undefined,
+                amount: 0,
+                paymentMethod: undefined,
+                studentId: undefined,
+                status: undefined
+            });
+        }
     }
+    fetchStudents();
   }, [isOpen, form]);
 
   const source = form.watch('source');
@@ -96,12 +100,12 @@ export function IncomeDialog({ isOpen, onOpenChange, onSave }: IncomeDialogProps
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>ນັກສຶກສາ</FormLabel>
-                        <Select onValueChange={(value) => field.onChange(parseInt(value))} >
+                        <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                                 <SelectTrigger><SelectValue placeholder="ເລືອກນັກສຶກສາ" /></SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                                {students.map(s => <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>)}
+                                {students.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
                             </SelectContent>
                         </Select>
                         <FormMessage />
